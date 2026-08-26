@@ -93,6 +93,3 @@ reports/
 # Archivos de sistema
 *.bak
 *.orig
-
-# Package
-package-lock.json
