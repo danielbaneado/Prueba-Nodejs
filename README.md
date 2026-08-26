@@ -32,11 +32,10 @@
 
 ## Project Description
 
-**Riwi Cine API** is a **RESTful enterprise API** for managing a sports movies platform:  
-products, orders, users, authentication, roles, and more.
+Unknown.
 
 Built with **Node.js**, **TypeScript**, and **PostgreSQL** under a modular and scalable architecture.  
-Its goal is to serve as a reliable backend for web or mobile applications.
+Its goal is to serve as a reliable backend for web.
 
 <div align=right>
 
@@ -78,7 +77,10 @@ app/src/
 ├── routes/        # API endpoints
 ├── services/      # Business logic
 ├── middleware/    # Custom middlewares
-└── seeders/       # Database seeders
+├── error/         # Global error handler
+├── seeders/       # Database seeders
+├── types/         # Useful to return JwtPayload and declarate it globally
+├── seeders/       # Database seeders
 ```
 
 <div align=right>
@@ -92,7 +94,7 @@ app/src/
 ##  Key Features
 
 - **Modular Architecture**: REPOSITORIES/DTO patterns with service layer
-- **Security**: JWT authentication + RBAC authorization
+- **Security**: JWT authentication
 - **Validation**: Automatic request validation with class-validator
 - **Documentation**: Auto-generated Swagger docs
 - **Database**: Automated migrations and seeders
@@ -203,20 +205,14 @@ docker-compose down
 
 ---
 
-## 👥 Contributors And Authors
+## 👥 Author
 
-| Author          | Role               | Path |
-| --------------- | ------------------ | ---- |
-| **Riwi Coders** | Backend Developers | Node |
+| Name              | Role               | Path |
+| ----------------- | ------------------ | ---- |
+| **Daniel Alzate** | Backend Developer  | Node |
 
 <div align=right>
 
 [Back to top](#-table-of-contents)
 
 </div>
-
----
-
-<p align="center">
-  Made with by <strong>Riwi Developers</strong> 
-</p>
