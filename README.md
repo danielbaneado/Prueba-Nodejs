@@ -1,6 +1,6 @@
 <!-- Title & Cover -->
 <h1 align="center">  
-   Riwi CIne API  
+   Sapmi Services
 </h1>
 
 <!-- Badges -->
