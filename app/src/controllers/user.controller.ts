@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import userService from '../services/user.service';
 import { AuthPayload } from '../types/index.d';
 import { CreateUserDto } from '../dto/create-user.dto';
-import errorhandler from '../error/errorHandler';
+import errorHandler from '../error/errorHandler';
 import { createToken, verifyToken } from '../utils/jwt';
 import { cookieOptions } from '../config/cookie';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -18,7 +18,7 @@ export const createUser = async (
 
     return res.status(201).json(user);
   } catch (error: any) {
-    if (error instanceof errorhandler) {
+    if (error instanceof errorHandler) {
       return res.status(error.estado).json({ error: error.message });
     }
 
@@ -48,7 +48,7 @@ export const authUser = async (
 
     return res.status(200).json(user);
   } catch (error: any) {
-    if (error instanceof errorhandler) {
+    if (error instanceof errorHandler) {
       return res.status(error.estado).json({ error: error.message });
     }
 
@@ -85,7 +85,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       role: user?.role,
       id: user?.id,
       name: user?.name,
-      membership: user?.membership
     };
 
     const accessToken = createToken(payload, String(process.env.JWT_SECRET), { expiresIn: '15m'});
@@ -102,11 +101,10 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
           role: payload.role,
           id: payload.id,
           name: payload.name,
-          membership: payload.membership
         },
       });
   } catch (error: any) {
-    if (error instanceof errorhandler) {
+    if (error instanceof errorHandler) {
       return res.status(error.estado).json({ error: error.message });
     }
 
@@ -133,7 +131,6 @@ export const refresh = async (req: Request, res: Response): Promise<Response> =>
         role: payload.role,
         id: payload.id,
         name: payload.name,
-        membership: payload.membership
       },
       String(process.env.JWT_SECRET),
       { expiresIn: '15m' }

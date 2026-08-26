@@ -1,6 +1,6 @@
 <!-- Title & Cover -->
 <h1 align="center">  
-   Sapmi Services
+   Riwi CIne API  
 </h1>
 
 <!-- Badges -->
@@ -19,14 +19,18 @@
 
 ##  Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Project Description](#project-description)
 - [Technologies Used](#technologies-used)
 - [Architecture](#architecture)
-- [Key Features](#-key-features)
-- [Documentation](#-documentation)
-- [Installation](#-installation)
-- [Docker](#-docker)
-- [Contributors And Authors](#-contributors-and-authors)
+- [Key Features](#key-features)
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Deploy all the project in Docker](#deploy-all-the-project-in-docker)
+  - [Linux/macOS](#linuxmacos)
+  - [Windows (Command Prompt)](#windows-command-prompt)
+  - [Windows (PowerShell)](#windows-powershell)
+- [👥 Author](#-author)
 
 ---
 

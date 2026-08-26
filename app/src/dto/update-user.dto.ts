@@ -1,6 +1,3 @@
-/**
- * DTO - Actualización de usuario
- */
 export interface UpdateUserDto {
   name?: string;
   lastName?: string;
@@ -10,8 +7,4 @@ export interface UpdateUserDto {
   documentType?: string;
   documentNumber?: string;
   birthDate?: string;
-  city?: string;
-  acceptsDataProcessing?: boolean;
-  acceptsTerms?: boolean;
-  acceptsNotifications?: boolean;
 }

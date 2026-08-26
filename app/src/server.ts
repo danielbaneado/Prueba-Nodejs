@@ -5,13 +5,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
 import { swaggerSpec } from './docs/swagger';
-import './models';
-import movieRoutes from './routes/movie.routes';
 import userRoutes from './routes/user.routes';
-import countryRoutes from './routes/country.routes';
-import departmentRoutes from './routes/department.routes';
-import cityRoutes from './routes/city.routes';
-import cinemaRoutes from './routes/cinema.routes';
 
 const app = express();
 
@@ -23,13 +17,6 @@ app.get('/api/test', (_req, res) => {
 });
 
 app.use('/api/users', userRoutes);
-app.use('/api/movies', movieRoutes);
-app.use('/api/countries', countryRoutes);
-app.use('/api/countries/:countryId/departments', departmentRoutes);
-app.use('/api/departments', departmentRoutes);
-app.use('/api/departments/:departmentId/cities', cityRoutes);
-app.use('/api/cities', cityRoutes);
-app.use('/api/cinemas', cinemaRoutes);
 
 // Swagger
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

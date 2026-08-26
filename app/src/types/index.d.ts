@@ -4,7 +4,6 @@ export type AuthPayload = JwtPayload & {
   role?: string;
   id?: number,
   name?: string,
-  membership?: string
 };
 
 declare global {

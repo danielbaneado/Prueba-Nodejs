@@ -1,7 +1,3 @@
-/**
- * DTO - Creación de Usuario
- */
-
 export interface CreateUserDto {
   name: string;
   lastName: string;
@@ -13,9 +9,5 @@ export interface CreateUserDto {
   documentType: string;
   documentNumber: string;
   birthDate: string;
-  city: string;
-  acceptsDataProcessing: boolean;
-  acceptsTerms: boolean;
-  acceptsNotifications: boolean;
   role?: string;
 }

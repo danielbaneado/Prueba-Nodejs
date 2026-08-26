@@ -3,7 +3,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import repository from '../repositories/user.repository';
 import { IUserService } from './interfaces/user.service.interface';
-import errorhandler from '../error/errorHandler';
+import errorHandler from '../error/errorHandler';
 import { validatePassword } from '../utils/password';
 import { comparePassword, hashPassword } from '../utils/bcrypt';
 
@@ -11,42 +11,30 @@ class UserService implements IUserService {
   async create(dto: CreateUserDto): Promise<User> {
     const existingUser = await repository.findUserCredential(dto.email);
     if (existingUser) {
-      throw new errorhandler(409, 'El usuario ya existe');
+      throw new errorHandler(409, 'El usuario ya existe');
     }
 
-    // Validar confirmación de correo
     if (dto.email !== dto.confirmEmail) {
-      throw new errorhandler(400, 'El correo y su confirmación no coinciden');
+      throw new errorHandler(400, 'El correo y su confirmación no coinciden');
     }
 
-    // Validar confirmación de contraseña
     if (dto.password !== dto.confirmPassword) {
-      throw new errorhandler(400, 'La contraseña y su confirmación no coinciden');
+      throw new errorHandler(400, 'La contraseña y su confirmación no coinciden');
     }
 
     const validPassword = await validatePassword(dto.password);
     if (!validPassword) {
-      throw new errorhandler(400, 'Contraseña inválida, aségurese de que cumpla con los requerimientos de contraseña')
+      throw new errorHandler(400, 'Contraseña inválida, aségurese de que cumpla con los requerimientos de contraseña')
     }
 
     // Validar número de teléfono (10 caracteres exactos)
     if (!/^\d{10}$/.test(dto.phone)) {
-      throw new errorhandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
+      throw new errorHandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
     }
 
-    // Validar aceptación de términos y tratamiento de datos
-    if (!dto.acceptsDataProcessing) {
-      throw new errorhandler(400, 'Debe aceptar el tratamiento de datos personales para continuar');
-    }
-
-    if (!dto.acceptsTerms) {
-      throw new errorhandler(400, 'Debe aceptar los términos y condiciones para continuar');
-    }
-
-    // Validar fecha de nacimiento
     const birthDate = new Date(dto.birthDate);
     if (isNaN(birthDate.getTime())) {
-      throw new errorhandler(400, 'La fecha de nacimiento no es válida');
+      throw new errorHandler(400, 'La fecha de nacimiento no es válida');
     }
 
     const saltRounds = Number(process.env.SALT_ROUNDS || 10);
@@ -77,13 +65,13 @@ class UserService implements IUserService {
     const user = await repository.findUserCredential(email);
 
     if (!user) {
-      throw new errorhandler(401, 'Correo o contraseña inválidos');
+      throw new errorHandler(401, 'Correo o contraseña inválidos');
     }
 
     const passwordMatches = await comparePassword(password, user.password);
     if (!passwordMatches) {
       await this.registerFailedAttempt(user)
-      throw new errorhandler(401, 'Contraseña incorrecta');
+      throw new errorHandler(401, 'Contraseña incorrecta');
     }
 
     return user;
@@ -121,7 +109,7 @@ class UserService implements IUserService {
 
   async updateUser(id: number, dto: UpdateUserDto): Promise<User | null> {
     const user = await repository.findByID(id)
-    if (!user) throw new errorhandler(404, "Usuario no encontrado")
+    if (!user) throw new errorHandler(404, "Usuario no encontrado")
 
     const data: Partial<UserAttributes> = {}
     if (dto.name !== undefined) data.name = dto.name
@@ -129,7 +117,7 @@ class UserService implements IUserService {
     if (dto.email !== undefined) {
       const existingUser = await repository.findUserCredential(dto.email);
       if (existingUser) {
-        throw new errorhandler(409, 'Este correo ya está vinculado a un usuario');
+        throw new errorHandler(409, 'Este correo ya está vinculado a un usuario');
       }
       data.email = dto.email
     }
@@ -137,7 +125,7 @@ class UserService implements IUserService {
     if (dto.password !== undefined) {
       const validPassword = await validatePassword(dto.password)
       if (!validPassword) {
-        throw new errorhandler(400, 'Contraseña inválida, aségurese de que cumpla con los requerimientos de contraseña')
+        throw new errorHandler(400, 'Contraseña inválida, aségurese de que cumpla con los requerimientos de contraseña')
       }
       const saltRounds = Number(process.env.SALT_ROUNDS || 10)
       data.password = await hashPassword(dto.password, saltRounds)
@@ -145,7 +133,7 @@ class UserService implements IUserService {
 
     if (dto.phone !== undefined) {
       if (!/^\d{10}$/.test(dto.phone)) {
-        throw new errorhandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
+        throw new errorHandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
       }
       data.phone = dto.phone
     }
@@ -155,17 +143,13 @@ class UserService implements IUserService {
     if (dto.birthDate !== undefined) {
       const birthDate = new Date(dto.birthDate)
       if (isNaN(birthDate.getTime())) {
-        throw new errorhandler(400, 'La fecha de nacimiento no es válida');
+        throw new errorHandler(400, 'La fecha de nacimiento no es válida');
       }
       data.birthDate = birthDate
     }
-    if (dto.city !== undefined) data.city = dto.city
-    if (dto.acceptsDataProcessing !== undefined) data.acceptsDataProcessing = dto.acceptsDataProcessing
-    if (dto.acceptsTerms !== undefined) data.acceptsTerms = dto.acceptsTerms
-    if (dto.acceptsNotifications !== undefined) data.acceptsNotifications = dto.acceptsNotifications
 
     if (Object.keys(data).length === 0) {
-      throw new errorhandler(400, "No se proporcionaron datos para actualizar")
+      throw new errorHandler(400, "No se proporcionaron datos para actualizar")
     }
     await repository.updateByID(id, data)
     return await repository.findByID(id) as User

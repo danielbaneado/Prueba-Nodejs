@@ -1,9 +1,3 @@
-/**
- * Rutas de Usuario
- * ----------------
- * Define los endpoints HTTP relacionados con la entidad User.
- */
-
 import { Router } from 'express';
 
 import {
@@ -280,6 +274,4 @@ router.post('/logout', logout);
  *         description: Error interno del servidor
  */
 router.put('/:id', authToken, updateUser)
-router.post('/legacy-login', authUser);
-
 export default router;
