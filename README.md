@@ -1,6 +1,6 @@
 <!-- Title & Cover -->
 <h1 align="center">  
-   Riwi CIne API  
+  Sapmi services
 </h1>
 
 <!-- Badges -->
@@ -74,17 +74,19 @@ Its goal is to serve as a reliable backend for web.
 
 ```
 app/src/
+├── config/        # Cookie and database parameters
 ├── controllers/   # HTTP request handlers
-├── repositories/  # Data access layer
+├── docs/          # Swagger doc
 ├── dto/           # Data validation objects
-├── models/        # Database models
-├── routes/        # API endpoints
-├── services/      # Business logic
-├── middleware/    # Custom middlewares
 ├── error/         # Global error handler
+├── middlewares/    # Custom middlewares
+├── models/        # Database models
+├── repositories/  # Data access layer
+├── routes/        # API endpoints
 ├── seeders/       # Database seeders
+├── services/      # Business logic
 ├── types/         # Useful to return JwtPayload and declarate it globally
-├── seeders/       # Database seeders
+├── utils/         # JWT, bcrypt and password validations
 ```
 
 <div align=right>
