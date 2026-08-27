@@ -1,7 +1,3 @@
-/**
- * DTO - Registro de Usuario
- */
-
 export interface RegisterDto {
   name: string;
   lastName: string;
@@ -13,9 +9,6 @@ export interface RegisterDto {
   documentType: string;
   documentNumber: string;
   birthDate: string;
-  acceptsDataProcessing: boolean;
-  acceptsTerms: boolean;
-  acceptsNotifications: boolean;
   captchaToken: string;
   captchaAnswer: number;
 }

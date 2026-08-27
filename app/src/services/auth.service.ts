@@ -42,24 +42,14 @@ class AuthService {
       throw new errorhandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
     }
 
-    if (!dto.acceptsDataProcessing) {
-      throw new errorhandler(400, 'Debe aceptar el tratamiento de datos personales para continuar');
-    }
-
-    if (!dto.acceptsTerms) {
-      throw new errorhandler(400, 'Debe aceptar los términos y condiciones para continuar');
-    }
-
-    // Verificar si el usuario ya existe
     const existingUser = await userRepository.findUserCredential(dto.email);
     if (existingUser) {
       throw new errorhandler(409, 'El usuario ya existe');
     }
 
-    // Generar token de activación (válido por 24 horas)
     const activationToken = uuidv4();
     const activationTokenExpires = new Date();
-    activationTokenExpires.setHours(activationTokenExpires.getHours() + 24);
+    activationTokenExpires.setHours(activationTokenExpires.getHours() + 24); // Token de 24 horas
 
     const saltRounds = Number(process.env.SALT_ROUNDS || 10);
     const hashedPassword = await hashPassword(dto.password, saltRounds);
@@ -78,9 +68,6 @@ class AuthService {
         documentType: dto.documentType,
         documentNumber: dto.documentNumber,
         birthDate: new Date(dto.birthDate),
-        acceptsDataProcessing: dto.acceptsDataProcessing,
-        acceptsTerms: dto.acceptsTerms,
-        acceptsNotifications: dto.acceptsNotifications,
         accountStatus: 'inactive',
         activationToken,
         activationTokenExpires,

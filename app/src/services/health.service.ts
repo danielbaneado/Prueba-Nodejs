@@ -11,7 +11,7 @@ export class HealthService implements IHealthService {
 
     return {
       status: databaseAvailable ? 'ok' : 'degraded',
-      service: 'riwi-cine-api',
+      service: 'sapmi-api',
       version: '1.0.0',
       environment: process.env.NODE_ENV || 'development',
       database: databaseAvailable ? 'up' : 'down',

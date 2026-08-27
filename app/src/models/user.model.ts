@@ -17,9 +17,6 @@ export interface UserAttributes {
   documentNumber: string;
   birthDate: Date;
   city: string;
-  acceptsDataProcessing: boolean;
-  acceptsTerms: boolean;
-  acceptsNotifications: boolean;
   accountStatus: "active" | "inactive";
   activationToken: string | null;
   activationTokenExpires: Date | null;
@@ -43,9 +40,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public documentNumber!: string;
   public birthDate!: Date;
   public city!: string;
-  public acceptsDataProcessing!: boolean;
-  public acceptsTerms!: boolean;
-  public acceptsNotifications!: boolean;
   public accountStatus!: "active" | "inactive";
   public activationToken!: string | null;
   public activationTokenExpires!: Date | null;
@@ -119,21 +113,6 @@ User.init(
     city: {
       type: DataTypes.STRING(100),
       allowNull: false,
-    },
-    acceptsDataProcessing: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    acceptsTerms: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    acceptsNotifications: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
     },
     accountStatus: {
       type: DataTypes.ENUM("active", "inactive"),
