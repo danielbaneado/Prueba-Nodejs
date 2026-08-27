@@ -1,22 +1,34 @@
 // app/src/server.ts
 
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express from 'express';
+import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 
+import { corsOptions } from './config/cors';
 import { swaggerSpec } from './docs/swagger';
+import { requestLogger } from './middlewares/requestLogger';
 import userRoutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
+import v1Routes from './routes/v1.routes';
 
 const app = express();
 
+app.disable('x-powered-by');
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use(requestLogger);
 
 app.get('/api/test', (_req, res) => {
   res.status(200).json({ message: 'Servidor funcionando correctamente!' });
 });
 
+app.use('/api/v1', v1Routes);
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Swagger
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

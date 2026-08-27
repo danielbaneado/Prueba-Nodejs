@@ -1,4 +1,8 @@
-export interface CreateUserDto {
+/**
+ * DTO - Registro de Usuario
+ */
+
+export interface RegisterDto {
   name: string;
   lastName: string;
   email: string;
@@ -9,6 +13,9 @@ export interface CreateUserDto {
   documentType: string;
   documentNumber: string;
   birthDate: string;
-  role?: string;
-  activationToken: string;
+  acceptsDataProcessing: boolean;
+  acceptsTerms: boolean;
+  acceptsNotifications: boolean;
+  captchaToken: string;
+  captchaAnswer: number;
 }

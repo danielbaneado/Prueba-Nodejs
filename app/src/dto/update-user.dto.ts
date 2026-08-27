@@ -7,4 +7,7 @@ export interface UpdateUserDto {
   documentType?: string;
   documentNumber?: string;
   birthDate?: string;
+  acceptsDataProcessing?: boolean;
+  acceptsTerms?: boolean;
+  acceptsNotifications?: boolean;
 }
