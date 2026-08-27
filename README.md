@@ -6,12 +6,12 @@
 <!-- Badges -->
 <div align="center">
 
-![Node.js](https://img.shields.io/badge/Node.js-v20.11.30-green?logo=node.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-v5.4.5-blue?logo=typescript)
-![Express](https://img.shields.io/badge/Express-v4.19.2-lightgrey?logo=express)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v8.11.5-blue?logo=postgresql)
+![Node.js](https://img.shields.io/badge/Node.js-v20.19.43-green?logo=node.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5.9.3-blue?logo=typescript)
+![Express](https://img.shields.io/badge/Express-v5.2.1-lightgrey?logo=express)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v8.22.0-blue?logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
-![Tests](https://img.shields.io/badge/Tests-Jest%20Configured-red?logo=jest)
+![Tests](https://img.shields.io/badge/Tests-Jest%20v29.7.0-red?logo=jest)
 
 </div>
 
@@ -36,10 +36,9 @@
 
 ## Project Description
 
-Unknown.
+<!-- Business logic description to be added -->
 
-Built with **Node.js**, **TypeScript**, and **PostgreSQL** under a modular and scalable architecture.  
-Its goal is to serve as a reliable backend for web.
+Built with **Node.js**, **TypeScript**, and **PostgreSQL** under a modular and scalable architecture.
 
 <div align=right>
 
@@ -53,13 +52,13 @@ Its goal is to serve as a reliable backend for web.
 
 | Category           | Technologies            |
 | ------------------ | ----------------------- |
-| **Language**       | TypeScript              |
-| **Runtime**        | Node.js                 |
-| **Framework**      | Express                 |
-| **Database**       | PostgreSQL + Sequelize  |
-| **Authentication** | JWT + bcrypt            |
+| **Language**       | TypeScript v5.9.3       |
+| **Runtime**        | Node.js v20.19.43       |
+| **Framework**      | Express v5.2.1          |
+| **Database**       | PostgreSQL + Sequelize v6.37.3 |
+| **Authentication** | JWT + bcryptjs v3.0.3   |
 | **Documentation**  | Swagger / OpenAPI       |
-| **Testing**        | Jest                    |
+| **Testing**        | Jest v29.7.0            |
 | **Containers**     | Docker / Docker Compose |
 
 <div align=right>
