@@ -1,5 +1,9 @@
 import crypto from 'crypto';
 
+// In-memory store for CAPTCHA challenges (token -> challenge)
+// In production, consider using Redis or another distributed store
+const captchaStore = new Map<string, { answer: number; createdAt: Date }>();
+
 export interface CaptchaChallenge {
   token: string;
   question: string;
@@ -35,6 +39,17 @@ export function generateCaptcha(): CaptchaChallenge {
 
   const token = crypto.randomBytes(32).toString('hex');
 
+  // Store the challenge for later verification
+  captchaStore.set(token, { answer, createdAt: new Date() });
+
+  // Clean up expired entries (older than 10 minutes)
+  const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+  for (const [key, value] of captchaStore.entries()) {
+    if (value.createdAt < tenMinutesAgo) {
+      captchaStore.delete(key);
+    }
+  }
+
   return {
     token,
     question,
@@ -43,6 +58,22 @@ export function generateCaptcha(): CaptchaChallenge {
 }
 
 export function verifyCaptcha(token: string, userAnswer: number): boolean {
-  // Aquí asumimos que el frontend envía el token y la respuesta y validamos que la respuesta sea un número
-  return typeof userAnswer === 'number' && !isNaN(userAnswer);
+  // Validate that userAnswer is a number
+  if (typeof userAnswer !== 'number' || isNaN(userAnswer)) {
+    return false;
+  }
+
+  // Look up the stored challenge
+  const challenge = captchaStore.get(token);
+  if (!challenge) {
+    return false;
+  }
+
+  // Compare the answer
+  const isValid = challenge.answer === userAnswer;
+
+  // Remove the challenge after verification (one-time use)
+  captchaStore.delete(token);
+
+  return isValid;
 }

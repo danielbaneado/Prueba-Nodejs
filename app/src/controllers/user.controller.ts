@@ -1,96 +1,65 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import userService from '../services/user.service';
 import { AuthPayload } from '../types/index.d';
-import { CreateUserDto } from '../dto/create-user.dto';
-import errorHandler from '../error/errorHandler';
 import { createToken, verifyToken } from '../utils/jwt';
 import { cookieOptions } from '../config/cookie';
+import { env } from '../config/env';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
-export const createUser = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const dto: CreateUserDto = req.body;
-    const user = await userService.create(dto);
-
-    return res.status(201).json(user);
-  } catch (error: any) {
-    if (error instanceof errorHandler) {
-      return res.status(error.estado).json({ error: error.message });
-    }
-
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-export const getUsers = async (
-  _req: Request,
-  res: Response
-): Promise<Response> => {
+export const getUsers = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const users = await userService.findAll();
-    return res.status(200).json(users);
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
   }
 };
 
-export const authUser = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { email, password } = req.body;
-    const user = await userService.findCredential(email, password);
-
-    return res.status(200).json(user);
-  } catch (error: any) {
-    if (error instanceof errorHandler) {
-      return res.status(error.estado).json({ error: error.message });
-    }
-
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-export const login = async (req: Request, res: Response): Promise<Response> => {
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ error: 'Correo y contraseña son requeridos' });
+    res.status(400).json({ error: 'Correo y contraseña son requeridos' });
+    return;
   }
 
   try {
     const user = await userService.findOne(email);
 
     if (!user) {
-      return res.status(401).json({error: 'Credenciales inválidas'});
+      res.status(401).json({error: 'Credenciales inválidas'});
+      return;
+    }
+
+    if (user.accountStatus === 'inactive') {
+      res.status(401).json({error: 'La cuenta no ha sido activada. Por favor revise su correo electrónico para activar su cuenta.'});
+      return;
     }
 
     if (user.lockedUntil && user.lockedUntil.getTime() > Date.now()){
-      return res.status(401).json({error: 'Cuenta bloqueada temporalmente por múltiples intentos fallidos, inténtelo nuevamente en unos minutos'});
+      res.status(401).json({error: 'Cuenta bloqueada temporalmente por múltiples intentos fallidos, inténtelo nuevamente en unos minutos'});
+      return;
     }
 
     const validatedUser = await userService.findCredential(email, password);
     if (!validatedUser) {
-      return res.status(401).json({error: 'Credenciales inválidas'})
+      res.status(401).json({error: 'Credenciales inválidas'});
+      return;
     }
 
     await userService.clearAttempts(validatedUser)
-    
+
     const payload = {
       role: user?.role,
       id: user?.id,
       name: user?.name,
     };
 
-    const accessToken = createToken(payload, String(process.env.JWT_SECRET), { expiresIn: '15m'});
-    const refreshToken = createToken(payload, String(process.env.JWT_REFRESH_SECRET), { expiresIn: '7d' });
+    const accessToken = createToken(payload, env.jwt.accessSecret, { expiresIn: env.jwt.accessExpiresIn });
+    const refreshToken = createToken(payload, env.jwt.refreshSecret, { expiresIn: env.jwt.refreshExpiresIn });
 
-    return res
+    res
       .status(201)
       .cookie('accessToken', accessToken, cookieOptions)
       .json({
@@ -103,27 +72,25 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
           name: payload.name,
         },
       });
-  } catch (error: any) {
-    if (error instanceof errorHandler) {
-      return res.status(error.estado).json({ error: error.message });
-    }
-
-    return res.status(500).json({ error: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const refresh = async (req: Request, res: Response): Promise<Response> => {
+export const refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      return res.status(401).json({ error: 'Usuario sin token' });
+      res.status(401).json({ error: 'Usuario sin token' });
+      return;
     }
 
-    const payload = verifyToken(refreshToken, String(process.env.JWT_REFRESH_SECRET)) as AuthPayload;
+    const payload = verifyToken(refreshToken, env.jwt.refreshSecret) as AuthPayload;
 
     if (!payload) {
-      return res.status(401).json({ error: 'Token inválido' });
+      res.status(401).json({ error: 'Token inválido' });
+      return;
     }
 
     const newToken = createToken(
@@ -132,45 +99,56 @@ export const refresh = async (req: Request, res: Response): Promise<Response> =>
         id: payload.id,
         name: payload.name,
       },
-      String(process.env.JWT_SECRET),
-      { expiresIn: '15m' }
+      env.jwt.accessSecret,
+      { expiresIn: env.jwt.accessExpiresIn }
     );
 
-    return res
+    res
       .status(201)
       .cookie('accessToken', newToken, cookieOptions)
       .json({ newToken });
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const logout = async (_req: Request, res: Response): Promise<Response> => {
-  try {
-    return res
-      .status(200)
-      .clearCookie('accessToken', cookieOptions)
-      .json({ message: 'Sesión cerrada correctamente' });
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
-  }
+export const logout = async (_req: Request, res: Response, _next: NextFunction): Promise<void> => {
+  res
+    .status(200)
+    .clearCookie('accessToken', cookieOptions)
+    .json({ message: 'Sesión cerrada correctamente' });
 };
 
-export const updateUser= async (req: Request, res: Response): Promise<Response> => {
+export const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    if (!req.user || !req.user.id){
-      return res.status(401).json({ message: "Usuario no autenticado" });
+    if (!req.user || !req.user.id) {
+      res.status(401).json({ message: "Usuario no autenticado" });
+      return;
     }
-    const userID: number= req.user.id
-    const dto: UpdateUserDto= req.body
-    const updatedUser= await userService.updateUser(userID, dto)
-    return res
-      .status(200)
-      .json({
-        message: "Usuario actualizado correctamente",
-        updatedUser
-      })
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+
+    const targetId = parseInt(String(req.params.id), 10);
+    if (isNaN(targetId)) {
+      res.status(400).json({ error: 'ID de usuario inválido' });
+      return;
+    }
+
+    // Authorization: admin puede modificar cualquiera, usuario solo a sí mismo
+    const isAdmin = req.user.role === 'admin';
+    const isSelf = req.user.id === targetId;
+
+    if (!isAdmin && !isSelf) {
+      res.status(403).json({ error: 'No autorizado para modificar este usuario' });
+      return;
+    }
+
+    const dto: UpdateUserDto = req.body;
+    const updatedUser = await userService.updateUser(targetId, dto);
+
+    res.status(200).json({
+      message: "Usuario actualizado correctamente",
+      updatedUser
+    });
+  } catch (error) {
+    next(error);
   }
 };

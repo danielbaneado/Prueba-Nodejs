@@ -1,14 +1,13 @@
-import 'dotenv/config';
 import app from './server';
 import sequelize from './config/database';
-import { validateEnvironment } from './config/env';
+import { env } from './config/env';
 import logger from './utils/logger';
+import './models';
 
-const PORT = process.env.APP_PORT || 5000;
+const PORT = env.app.port;
 
 const start = async () => {
   try {
-    validateEnvironment();
     await sequelize.authenticate();
     logger.info('Conexión a la base de datos establecida');
 

@@ -1,8 +1,6 @@
 import { Router } from 'express';
 
 import {
-  authUser,
-  createUser,
   getUsers,
   login,
   logout,
@@ -10,136 +8,29 @@ import {
   updateUser,
 } from '../controllers/user.controller';
 import { authToken } from '../middlewares/authToken';
+import requireRole from '../middlewares/requireRole';
 
 const router = Router();
 
 /**
  * @swagger
  * /api/users:
- *   post:
- *     summary: Crear un nuevo usuario
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - lastName
- *               - email
- *               - confirmEmail
- *               - password
- *               - confirmPassword
- *               - phone
- *               - documentType
- *               - documentNumber
- *               - birthDate
- *               - city
- *               - acceptsDataProcessing
- *               - acceptsTerms
- *             properties:
- *               name:
- *                 type: string
- *                 example: John
- *               lastName:
- *                 type: string
- *                 example: Doe
- *               email:
- *                 type: string
- *                 example: john.doe@example.com
- *               confirmEmail:
- *                 type: string
- *                 example: john.doe@example.com
- *               password:
- *                 type: string
- *                 example: "SecurePass123!"
- *               confirmPassword:
- *                 type: string
- *                 example: "SecurePass123!"
- *               phone:
- *                 type: string
- *                 example: "3001234567"
- *               documentType:
- *                 type: string
- *                 example: "CC"
- *               documentNumber:
- *                 type: string
- *                 example: "1234567890"
- *               birthDate:
- *                 type: string
- *                 format: date
- *                 example: "1990-01-01"
- *               city:
- *                 type: string
- *                 example: "Bogotá"
- *               acceptsDataProcessing:
- *                 type: boolean
- *                 example: true
- *               acceptsTerms:
- *                 type: boolean
- *                 example: true
- *               acceptsNotifications:
- *                 type: boolean
- *                 example: true
- *     responses:
- *       201:
- *         description: Usuario creado exitosamente
- *       400:
- *         description: Datos inválidos
- *       500:
- *         description: Error interno del servidor
- */
-router.post('/', createUser);
-router.post('/register', createUser);
-
-/**
- * @swagger
- * /api/users:
  *   get:
- *     summary: Obtener todos los usuarios
+ *     summary: Obtener todos los usuarios (solo admin)
  *     tags: [Users]
+ *     security:
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Lista de usuarios obtenida exitosamente
- *       500:
- *         description: Error interno del servidor
- */
-router.get('/', getUsers);
-router.get('/getUsers', getUsers);
-
-/**
- * @swagger
- * /api/users/auth:
- *   post:
- *     summary: Autenticar usuario por email y contraseña
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 example: john.doe@example.com
- *               password:
- *                 type: string
- *                 example: "123"
- *     responses:
- *       200:
- *         description: Usuario autenticado exitosamente
  *       401:
- *         description: Credenciales inválidas
+ *         description: No autenticado
+ *       403:
+ *         description: No autorizado (requiere rol admin)
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/auth', authUser);
+router.get('/', authToken, requireRole('admin'), getUsers);
 
 /**
  * @swagger
@@ -266,6 +157,8 @@ router.post('/logout', logout);
  *         description: Datos inválidos o sin campos para actualizar
  *       401:
  *         description: Usuario sin token/ token inválido
+ *       403:
+ *         description: No autorizado para modificar este usuario
  *       404:
  *         description: Usuario no encontrado
  *       409:
@@ -274,4 +167,5 @@ router.post('/logout', logout);
  *         description: Error interno del servidor
  */
 router.put('/:id', authToken, updateUser)
+
 export default router;

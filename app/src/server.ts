@@ -1,5 +1,3 @@
-// app/src/server.ts
-
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
@@ -9,6 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import { corsOptions } from './config/cors';
 import { swaggerSpec } from './docs/swagger';
 import { requestLogger } from './middlewares/requestLogger';
+import { centralizedErrorHandler } from './error/centralizedErrorHandler';
 import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
 import v1Routes from './routes/v1.routes';
@@ -32,5 +31,8 @@ app.use('/api/auth', authRoutes);
 
 // Swagger
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Centralized error handling middleware (must be after all routes)
+app.use(centralizedErrorHandler);
 
 export default app;

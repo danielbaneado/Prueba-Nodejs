@@ -8,9 +8,9 @@ import { generateCaptcha, verifyCaptcha } from '../utils/captcha';
 import emailService from './email.service';
 import errorhandler from '../error/errorHandler';
 import { v4 as uuidv4 } from 'uuid';
-import { Transaction } from 'sequelize';
+import { IAuthService } from './interfaces/auth.service.interface';
 
-class AuthService {
+class AuthService implements IAuthService {
   async getCaptcha(): Promise<{ token: string; question: string }> {
     const captcha = generateCaptcha();
     return {
@@ -128,10 +128,11 @@ class AuthService {
       throw new errorhandler(400, 'La cuenta ya está activada');
     }
 
-    // Activar cuenta
+    // Activar cuenta: limpiar token y establecer estado activo
     await userRepository.updateByID(userToActivate.id, {
       activationToken: null,
       activationTokenExpires: null,
+      accountStatus: 'active',
     });
 
     return { message: 'Cuenta activada exitosamente. Ya puede iniciar sesión.' };

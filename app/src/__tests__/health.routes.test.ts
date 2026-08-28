@@ -8,7 +8,7 @@ describe('GET /api/v1/health', () => {
   it('registra el método GET en la raíz del router de health', () => {
     const health: HealthCheckDto = {
       status: 'ok',
-      service: 'riwi-cine-api',
+      service: 'sapmi-api',
       version: '1.0.0',
       environment: 'test',
       database: 'up',
@@ -32,7 +32,7 @@ describe('GET /api/v1/health', () => {
   it('responde HTTP 200 con el estado entregado por el servicio', async () => {
     const health: HealthCheckDto = {
       status: 'ok',
-      service: 'riwi-cine-api',
+      service: 'sapmi-api',
       version: '1.0.0',
       environment: 'test',
       database: 'up',

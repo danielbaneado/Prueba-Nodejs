@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
+import { env } from '../config/env';
 
 export async function authToken(req: Request, res: Response, next: NextFunction): Promise<void> {
   const token = req.cookies?.accessToken;
@@ -10,10 +11,10 @@ export async function authToken(req: Request, res: Response, next: NextFunction)
   }
 
   try {
-    const data = jwt.verify(token, String(process.env.JWT_SECRET));
+    const data = jwt.verify(token, env.jwt.accessSecret);
     req.user = data as any;
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ message: 'Token inválido' });
   }
 }

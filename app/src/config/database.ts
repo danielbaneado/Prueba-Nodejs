@@ -3,7 +3,7 @@
 /**
  * Configuración de Sequelize para PostgreSQL
  * ------------------------------------------
- * Este módulo inicializa y exporta una instancia de Sequelize, 
+ * Este módulo inicializa y exporta una instancia de Sequelize,
  * se configurada con las variables de entorno definidas en `.env` o en `docker-compose`.
  *
  * Uso principal:
@@ -19,6 +19,7 @@
  */
 
 import { Sequelize } from "sequelize";
+import './env';
 
 /**
  * Instancia de Sequelize configurada para PostgreSQL.

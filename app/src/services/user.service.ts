@@ -1,5 +1,4 @@
 import User, { UserAttributes } from '../models/user.model';
-import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import repository from '../repositories/user.repository';
 import { IUserService } from './interfaces/user.service.interface';
@@ -8,47 +7,6 @@ import { validatePassword } from '../utils/password';
 import { comparePassword, hashPassword } from '../utils/bcrypt';
 
 class UserService implements IUserService {
-  async create(dto: CreateUserDto): Promise<User> {
-    const existingUser = await repository.findUserCredential(dto.email);
-    if (existingUser) {
-      throw new errorHandler(409, 'El usuario ya existe');
-    }
-
-    if (dto.email !== dto.confirmEmail) {
-      throw new errorHandler(400, 'El correo y su confirmación no coinciden');
-    }
-
-    if (dto.password !== dto.confirmPassword) {
-      throw new errorHandler(400, 'La contraseña y su confirmación no coinciden');
-    }
-
-    const validPassword = await validatePassword(dto.password);
-    if (!validPassword) {
-      throw new errorHandler(400, 'Contraseña inválida, aségurese de que cumpla con los requerimientos de contraseña')
-    }
-
-    // Validar número de teléfono (10 caracteres exactos)
-    if (!/^\d{10}$/.test(dto.phone)) {
-      throw new errorHandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
-    }
-
-    const birthDate = new Date(dto.birthDate);
-    if (isNaN(birthDate.getTime())) {
-      throw new errorHandler(400, 'La fecha de nacimiento no es válida');
-    }
-
-    const saltRounds = Number(process.env.SALT_ROUNDS || 10);
-    const { confirmEmail, confirmPassword, ...userData } = dto;
-    const userPayload = {
-      ...userData,
-      birthDate,
-      password: await hashPassword(dto.password, saltRounds),
-      role: dto.role || 'usuario',
-    } as any;
-
-    return await repository.create(userPayload);
-  }
-
   async findAll(): Promise<User[]> {
     return await repository.findAll();
   }

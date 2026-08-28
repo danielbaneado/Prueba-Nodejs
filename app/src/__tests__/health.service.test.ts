@@ -12,7 +12,7 @@ describe('HealthService', () => {
 
     expect(result.status).toBe('ok');
     expect(result.database).toBe('up');
-    expect(result.service).toBe('riwi-cine-api');
+    expect(result.service).toBe('sapmi-api');
     expect(result.timestamp).toEqual(expect.any(String));
   });
 

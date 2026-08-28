@@ -8,7 +8,6 @@ export interface UserAttributes {
   email: string;
   password: string;
   role: "admin" | "usuario";
-  membership: string;
   failedLoginAttempts: number;
   lastLoginAttempt: Date | null;
   lockedUntil: Date | null;
@@ -16,7 +15,6 @@ export interface UserAttributes {
   documentType: string;
   documentNumber: string;
   birthDate: Date;
-  city: string;
   accountStatus: "active" | "inactive";
   activationToken: string | null;
   activationTokenExpires: Date | null;
@@ -31,7 +29,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public email!: string;
   public password!: string;
   public role!: "admin" | "usuario";
-  public membership!: string;
   public failedLoginAttempts!: number;
   public lastLoginAttempt!: Date | null;
   public lockedUntil!: Date | null;
@@ -39,7 +36,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public documentType!: string;
   public documentNumber!: string;
   public birthDate!: Date;
-  public city!: string;
   public accountStatus!: "active" | "inactive";
   public activationToken!: string | null;
   public activationTokenExpires!: Date | null;
@@ -74,11 +70,6 @@ User.init(
       allowNull: false,
       defaultValue: 'usuario',
     },
-    membership: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      defaultValue: 'básica',
-    },
     failedLoginAttempts: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -108,10 +99,6 @@ User.init(
     },
     birthDate: {
       type: DataTypes.DATE,
-      allowNull: false,
-    },
-    city: {
-      type: DataTypes.STRING(100),
       allowNull: false,
     },
     accountStatus: {
