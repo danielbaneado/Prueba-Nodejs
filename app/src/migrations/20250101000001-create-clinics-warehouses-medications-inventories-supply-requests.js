@@ -214,76 +214,6 @@ module.exports = {
       name: 'unique_warehouse_medication',
     });
 
-    // Create supply_requests table
-    await queryInterface.createTable('supply_requests', {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      clinicId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'clinics',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',
-      },
-      medicationId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'medications',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',
-      },
-      warehouseId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'warehouses',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      status: {
-        type: Sequelize.ENUM('pending', 'assigned', 'in_transit', 'delivered', 'cancelled'),
-        allowNull: false,
-        defaultValue: 'pending',
-      },
-      notes: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      requestDate: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-      deliveryDate: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-    });
 
     // Add indexes
     await queryInterface.addIndex('clinics', ['NIT']);
@@ -291,18 +221,9 @@ module.exports = {
     await queryInterface.addIndex('warehouses', ['managerId']);
     await queryInterface.addIndex('inventories', ['warehouseId']);
     await queryInterface.addIndex('inventories', ['medicationId']);
-    await queryInterface.addIndex('supply_requests', ['clinicId']);
-    await queryInterface.addIndex('supply_requests', ['warehouseId']);
-    await queryInterface.addIndex('supply_requests', ['medicationId']);
-    await queryInterface.addIndex('supply_requests', ['status']);
   },
 
   down: async (queryInterface, Sequelize) => {
-    // Drop indexes
-    await queryInterface.removeIndex('supply_requests', ['status']);
-    await queryInterface.removeIndex('supply_requests', ['medicationId']);
-    await queryInterface.removeIndex('supply_requests', ['warehouseId']);
-    await queryInterface.removeIndex('supply_requests', ['clinicId']);
     await queryInterface.removeIndex('inventories', ['medicationId']);
     await queryInterface.removeIndex('inventories', ['warehouseId']);
     await queryInterface.removeIndex('warehouses', ['managerId']);
@@ -310,7 +231,6 @@ module.exports = {
     await queryInterface.removeIndex('clinics', ['NIT']);
 
     // Drop tables
-    await queryInterface.dropTable('supply_requests');
     await queryInterface.dropTable('inventories');
     await queryInterface.dropTable('medications');
     await queryInterface.dropTable('warehouses');

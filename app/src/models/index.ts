@@ -7,5 +7,4 @@ import './clinic.model';
 import './warehouse.model';
 import './medication.model';
 import './inventory.model';
-import './supply-request.model';
 import './associations.model';
