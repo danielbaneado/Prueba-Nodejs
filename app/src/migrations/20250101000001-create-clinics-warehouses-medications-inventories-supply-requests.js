@@ -5,7 +5,7 @@ module.exports = {
     // Add new ENUM values to users.role
     await queryInterface.sequelize.query(`
       ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
-      ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin', 'gestor de solicitudes', 'responsable de clínica', 'gestor de almacén'));
+      ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin', 'gestor de solicitudes');
     `);
 
     // Create clinics table
