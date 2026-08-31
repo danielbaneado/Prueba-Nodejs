@@ -3,7 +3,15 @@ import type { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env';
 
 export async function authToken(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const token = req.cookies?.accessToken;
+  // Try to get token from cookie first, then from Authorization header (Bearer)
+  let token = req.cookies?.accessToken;
+
+  if (!token) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.split(' ')[1];
+    }
+  }
 
   if (!token) {
     res.status(401).json({ message: 'Usuario sin token' });

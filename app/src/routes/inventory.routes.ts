@@ -20,6 +20,7 @@ const router = Router();
  *     summary: Obtener todos los registros de inventario
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     responses:
  *       200:
@@ -31,7 +32,7 @@ const router = Router();
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/', authToken, requireRole('admin'), getAllInventories);
+router.get('/', authToken, requireRole('admin', 'gestor de solicitudes'), getAllInventories);
 
 /**
  * @swagger
@@ -40,6 +41,7 @@ router.get('/', authToken, requireRole('admin'), getAllInventories);
  *     summary: Obtener un registro de inventario por ID
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -60,7 +62,7 @@ router.get('/', authToken, requireRole('admin'), getAllInventories);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/:id', authToken, requireRole('admin'), getInventoryById);
+router.get('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), getInventoryById);
 
 /**
  * @swagger
@@ -69,6 +71,7 @@ router.get('/:id', authToken, requireRole('admin'), getInventoryById);
  *     summary: Obtener inventario por almacén
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -87,7 +90,7 @@ router.get('/:id', authToken, requireRole('admin'), getInventoryById);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/warehouse/:warehouseId', authToken, requireRole('admin'), getInventoriesByWarehouse);
+router.get('/warehouse/:warehouseId', authToken, requireRole('admin', 'gestor de solicitudes'), getInventoriesByWarehouse);
 
 /**
  * @swagger
@@ -96,6 +99,7 @@ router.get('/warehouse/:warehouseId', authToken, requireRole('admin'), getInvent
  *     summary: Obtener inventario por medicamento
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -114,7 +118,7 @@ router.get('/warehouse/:warehouseId', authToken, requireRole('admin'), getInvent
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/medication/:medicationId', authToken, requireRole('admin'), getInventoriesByMedication);
+router.get('/medication/:medicationId', authToken, requireRole('admin', 'gestor de solicitudes'), getInventoriesByMedication);
 
 /**
  * @swagger
@@ -123,6 +127,7 @@ router.get('/medication/:medicationId', authToken, requireRole('admin'), getInve
  *     summary: Crear un nuevo registro de inventario
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     requestBody:
  *       required: true
@@ -162,7 +167,7 @@ router.get('/medication/:medicationId', authToken, requireRole('admin'), getInve
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/', authToken, requireRole('admin'), createInventory);
+router.post('/', authToken, requireRole('admin', 'gestor de solicitudes'), createInventory);
 
 /**
  * @swagger
@@ -171,6 +176,7 @@ router.post('/', authToken, requireRole('admin'), createInventory);
  *     summary: Actualizar un registro de inventario
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -205,7 +211,7 @@ router.post('/', authToken, requireRole('admin'), createInventory);
  *       500:
  *         description: Error interno del servidor
  */
-router.put('/:id', authToken, requireRole('admin'), updateInventory);
+router.put('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), updateInventory);
 
 /**
  * @swagger
@@ -214,6 +220,7 @@ router.put('/:id', authToken, requireRole('admin'), updateInventory);
  *     summary: Eliminar un registro de inventario
  *     tags: [Inventory]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path

@@ -23,6 +23,7 @@ const router = Router();
  *     summary: Obtener todas las solicitudes de abastecimiento
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     responses:
  *       200:
@@ -34,7 +35,7 @@ const router = Router();
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/', authToken, requireRole('admin'), getAllSupplyRequests);
+router.get('/', authToken, requireRole('admin', 'gestor de solicitudes'), getAllSupplyRequests);
 
 /**
  * @swagger
@@ -43,6 +44,7 @@ router.get('/', authToken, requireRole('admin'), getAllSupplyRequests);
  *     summary: Obtener solicitudes por clínica (historial)
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -61,7 +63,7 @@ router.get('/', authToken, requireRole('admin'), getAllSupplyRequests);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/clinic/:clinicId', authToken, requireRole('admin'), getSupplyRequestsByClinic);
+router.get('/clinic/:clinicId', authToken, requireRole('admin', 'gestor de solicitudes'), getSupplyRequestsByClinic);
 
 /**
  * @swagger
@@ -70,6 +72,7 @@ router.get('/clinic/:clinicId', authToken, requireRole('admin'), getSupplyReques
  *     summary: Obtener solicitudes por almacén
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -88,7 +91,7 @@ router.get('/clinic/:clinicId', authToken, requireRole('admin'), getSupplyReques
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/warehouse/:warehouseId', authToken, requireRole('admin'), getSupplyRequestsByWarehouse);
+router.get('/warehouse/:warehouseId', authToken, requireRole('admin', 'gestor de solicitudes'), getSupplyRequestsByWarehouse);
 
 /**
  * @swagger
@@ -97,6 +100,7 @@ router.get('/warehouse/:warehouseId', authToken, requireRole('admin'), getSupply
  *     summary: Obtener solicitudes por estado
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -116,7 +120,7 @@ router.get('/warehouse/:warehouseId', authToken, requireRole('admin'), getSupply
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/status/:status', authToken, requireRole('admin'), getSupplyRequestsByStatus);
+router.get('/status/:status', authToken, requireRole('admin', 'gestor de solicitudes'), getSupplyRequestsByStatus);
 
 /**
  * @swagger
@@ -125,6 +129,7 @@ router.get('/status/:status', authToken, requireRole('admin'), getSupplyRequests
  *     summary: Obtener una solicitud por ID
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -145,7 +150,7 @@ router.get('/status/:status', authToken, requireRole('admin'), getSupplyRequests
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/:id', authToken, requireRole('admin'), getSupplyRequestById);
+router.get('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), getSupplyRequestById);
 
 /**
  * @swagger
@@ -154,6 +159,7 @@ router.get('/:id', authToken, requireRole('admin'), getSupplyRequestById);
  *     summary: Crear una nueva solicitud de abastecimiento
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     requestBody:
  *       required: true
@@ -186,7 +192,7 @@ router.get('/:id', authToken, requireRole('admin'), getSupplyRequestById);
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/', authToken, requireRole('admin'), createSupplyRequest);
+router.post('/', authToken, requireRole('admin', 'gestor de solicitudes'), createSupplyRequest);
 
 /**
  * @swagger
@@ -195,6 +201,7 @@ router.post('/', authToken, requireRole('admin'), createSupplyRequest);
  *     summary: Actualizar una solicitud de abastecimiento
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -234,7 +241,7 @@ router.post('/', authToken, requireRole('admin'), createSupplyRequest);
  *       500:
  *         description: Error interno del servidor
  */
-router.put('/:id', authToken, requireRole('admin'), updateSupplyRequest);
+router.put('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), updateSupplyRequest);
 
 /**
  * @swagger
@@ -243,6 +250,7 @@ router.put('/:id', authToken, requireRole('admin'), updateSupplyRequest);
  *     summary: Asignar un almacén a una solicitud
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -276,7 +284,7 @@ router.put('/:id', authToken, requireRole('admin'), updateSupplyRequest);
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/:id/assign', authToken, requireRole('admin'), assignWarehouse);
+router.post('/:id/assign', authToken, requireRole('admin', 'gestor de solicitudes'), assignWarehouse);
 
 /**
  * @swagger
@@ -285,6 +293,7 @@ router.post('/:id/assign', authToken, requireRole('admin'), assignWarehouse);
  *     summary: Actualizar el estado de una solicitud
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -319,7 +328,7 @@ router.post('/:id/assign', authToken, requireRole('admin'), assignWarehouse);
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/:id/status', authToken, requireRole('admin'), updateSupplyRequestStatus);
+router.post('/:id/status', authToken, requireRole('admin', 'gestor de solicitudes'), updateSupplyRequestStatus);
 
 /**
  * @swagger
@@ -328,6 +337,7 @@ router.post('/:id/status', authToken, requireRole('admin'), updateSupplyRequestS
  *     summary: Eliminar una solicitud de abastecimiento
  *     tags: [Supply Requests]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -350,6 +360,6 @@ router.post('/:id/status', authToken, requireRole('admin'), updateSupplyRequestS
  *       500:
  *         description: Error interno del servidor
  */
-router.delete('/:id', authToken, requireRole('admin'), deleteSupplyRequest);
+router.delete('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), deleteSupplyRequest);
 
 export default router;

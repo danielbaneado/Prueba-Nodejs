@@ -18,6 +18,7 @@ const router = Router();
  *     summary: Obtener todos los medicamentos
  *     tags: [Medications]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     responses:
  *       200:
@@ -29,7 +30,7 @@ const router = Router();
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/', authToken, requireRole('admin'), getAllMedications);
+router.get('/', authToken, requireRole('admin', 'gestor de solicitudes'), getAllMedications);
 
 /**
  * @swagger
@@ -38,6 +39,7 @@ router.get('/', authToken, requireRole('admin'), getAllMedications);
  *     summary: Obtener un medicamento por ID
  *     tags: [Medications]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -58,7 +60,7 @@ router.get('/', authToken, requireRole('admin'), getAllMedications);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/:id', authToken, requireRole('admin'), getMedicationById);
+router.get('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), getMedicationById);
 
 /**
  * @swagger
@@ -67,6 +69,7 @@ router.get('/:id', authToken, requireRole('admin'), getMedicationById);
  *     summary: Crear un nuevo medicamento
  *     tags: [Medications]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     requestBody:
  *       required: true
@@ -102,7 +105,7 @@ router.get('/:id', authToken, requireRole('admin'), getMedicationById);
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/', authToken, requireRole('admin'), createMedication);
+router.post('/', authToken, requireRole('admin', 'gestor de solicitudes'), createMedication);
 
 /**
  * @swagger
@@ -111,6 +114,7 @@ router.post('/', authToken, requireRole('admin'), createMedication);
  *     summary: Actualizar un medicamento
  *     tags: [Medications]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -149,7 +153,7 @@ router.post('/', authToken, requireRole('admin'), createMedication);
  *       500:
  *         description: Error interno del servidor
  */
-router.put('/:id', authToken, requireRole('admin'), updateMedication);
+router.put('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), updateMedication);
 
 /**
  * @swagger
@@ -158,6 +162,7 @@ router.put('/:id', authToken, requireRole('admin'), updateMedication);
  *     summary: Eliminar un medicamento
  *     tags: [Medications]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path

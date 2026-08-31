@@ -20,6 +20,7 @@ const router = Router();
  *     summary: Obtener todas las clínicas
  *     tags: [Clinics]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     responses:
  *       200:
@@ -31,7 +32,7 @@ const router = Router();
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/', authToken, requireRole('admin'), getAllClinics);
+router.get('/', authToken, requireRole('admin', 'gestor de solicitudes'), getAllClinics);
 
 /**
  * @swagger
@@ -40,6 +41,7 @@ router.get('/', authToken, requireRole('admin'), getAllClinics);
  *     summary: Obtener una clínica por NIT
  *     tags: [Clinics]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -60,7 +62,7 @@ router.get('/', authToken, requireRole('admin'), getAllClinics);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/NIT/:NIT', authToken, requireRole('admin'), getClinicByNIT);
+router.get('/NIT/:NIT', authToken, requireRole('admin', 'gestor de solicitudes'), getClinicByNIT);
 
 /**
  * @swagger
@@ -69,6 +71,7 @@ router.get('/NIT/:NIT', authToken, requireRole('admin'), getClinicByNIT);
  *     summary: Obtener una clínica por ID
  *     tags: [Clinics]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -89,7 +92,7 @@ router.get('/NIT/:NIT', authToken, requireRole('admin'), getClinicByNIT);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/:id', authToken, requireRole('admin'), getClinicById);
+router.get('/:id', authToken, requireRole('admin', 'gestor de solicitudes'), getClinicById);
 
 /**
  * @swagger
@@ -98,6 +101,7 @@ router.get('/:id', authToken, requireRole('admin'), getClinicById);
  *     summary: Crear una nueva clínica
  *     tags: [Clinics]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     requestBody:
  *       required: true
@@ -143,7 +147,7 @@ router.get('/:id', authToken, requireRole('admin'), getClinicById);
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/', authToken, requireRole('admin'), createClinic, validateClinic);
+router.post('/', authToken, requireRole('admin'), validateClinic, createClinic);
 
 /**
  * @swagger
@@ -152,6 +156,7 @@ router.post('/', authToken, requireRole('admin'), createClinic, validateClinic);
  *     summary: Actualizar una clínica
  *     tags: [Clinics]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -205,6 +210,7 @@ router.put('/:id', authToken, requireRole('admin'), updateClinic);
  *     summary: Eliminar una clínica
  *     tags: [Clinics]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path

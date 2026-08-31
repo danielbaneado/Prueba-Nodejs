@@ -18,6 +18,7 @@ const router = Router();
  *     summary: Obtener todos los almacenes
  *     tags: [Warehouses]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     responses:
  *       200:
@@ -29,7 +30,7 @@ const router = Router();
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/', authToken, requireRole('admin'), getAllWarehouses);
+router.get('/', authToken, requireRole('admin', 'gestor de solicitudes'), getAllWarehouses);
 
 /**
  * @swagger
@@ -38,6 +39,7 @@ router.get('/', authToken, requireRole('admin'), getAllWarehouses);
  *     summary: Obtener un almacén por ID
  *     tags: [Warehouses]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -58,7 +60,7 @@ router.get('/', authToken, requireRole('admin'), getAllWarehouses);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/:id', authToken, requireRole('admin'), getWarehouseById);
+router.get('/:id', authToken, requireRole('admin','gestor de solicitudes'), getWarehouseById);
 
 /**
  * @swagger
@@ -67,6 +69,7 @@ router.get('/:id', authToken, requireRole('admin'), getWarehouseById);
  *     summary: Crear un nuevo almacén
  *     tags: [Warehouses]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     requestBody:
  *       required: true
@@ -116,6 +119,7 @@ router.post('/', authToken, requireRole('admin'), createWarehouse);
  *     summary: Actualizar un almacén
  *     tags: [Warehouses]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
@@ -156,7 +160,7 @@ router.post('/', authToken, requireRole('admin'), createWarehouse);
  *       500:
  *         description: Error interno del servidor
  */
-router.put('/:id', authToken, requireRole('admin'), updateWarehouse);
+router.put('/:id', authToken, requireRole('admin', 'gestor de almacén'), updateWarehouse);
 
 /**
  * @swagger
@@ -165,6 +169,7 @@ router.put('/:id', authToken, requireRole('admin'), updateWarehouse);
  *     summary: Eliminar un almacén
  *     tags: [Warehouses]
  *     security:
+ *       - bearerAuth: []
  *       - cookieAuth: []
  *     parameters:
  *       - in: path

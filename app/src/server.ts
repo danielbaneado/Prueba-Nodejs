@@ -15,6 +15,7 @@ import warehouseRoutes from './routes/warehouse.routes';
 import medicationRoutes from './routes/medication.routes';
 import inventoryRoutes from './routes/inventory.routes';
 import supplyRequestRoutes from './routes/supply-request.routes';
+import seedRoutes from './routes/seed.routes';
 import v1Routes from './routes/v1.routes';
 
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/warehouses', warehouseRoutes);
 app.use('/api/medications', medicationRoutes);
 app.use('/api/inventories', inventoryRoutes);
 app.use('/api/supply-requests', supplyRequestRoutes);
+app.use('/api/seed', seedRoutes);
 
 // Swagger
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
