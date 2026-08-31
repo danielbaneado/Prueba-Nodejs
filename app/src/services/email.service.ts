@@ -16,7 +16,7 @@ class EmailService {
   }
 
   async sendActivationEmail(email: string, token: string, userName: string): Promise<void> {
-    const activationUrl = `${process.env.APP_URL || 'http://localhost:5000'}/api/auth/activate?token=${token}`;
+    const activationUrl = `${process.env.APP_URL || 'http://localhost:5001'}/api/auth/activate?token=${token}`;
 
     const mailOptions = {
       from: `"Sapmi commerce" <${process.env.SMTP_USER || 'noreply@sapmicommerce.com'}>`,

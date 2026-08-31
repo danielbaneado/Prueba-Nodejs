@@ -1,8 +1,8 @@
 const isProd: boolean= process.env.NODE_ENV=== "production"
 
 export const cookieOptions: object= {
-    httpOnly: true, // Cookie solo accesible por medio de peticiones HTTP, no JS
-    secure: isProd, // Si está en producción, solo es accesible por HTTPS
-    samesite: isProd ? "none" : "lax", // En producción se puede transportar entre diferentes dominios, sino, se limita al mismo (development)
-    maxAge: 60 * 60 * 1000 // 1 hora en milisegundos
+    httpOnly: true, // Cookie only accesible throughout HTTP requests, no via JS
+    secure: isProd, // If it is in production, it will be only accesible via HTTPS
+    samesite: isProd ? "none" : "lax", // If its prod, allows different domain communication
+    maxAge: 60 * 60 * 1000 // 1 hour in miliseconds
 }

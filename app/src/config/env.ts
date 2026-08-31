@@ -1,10 +1,8 @@
 import dotenv from 'dotenv';
 import { SignOptions } from 'jsonwebtoken';
 
-// Cargar .env desde el directorio padre (Prueba-Nodejs/.env)
 dotenv.config({ path: '../.env' });
 
-// Validación de variables requeridas
 const REQUIRED_VARIABLES = [
   'POSTGRES_DB',
   'POSTGRES_USER',

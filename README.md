@@ -1,6 +1,6 @@
 <!-- Title & Cover -->
 <h1 align="center">  
-  Sapmi services
+  Sapmi Riwi MediCare Plus
 </h1>
 
 <!-- Badges -->

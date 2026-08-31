@@ -3,7 +3,7 @@ import type { CorsOptions } from 'cors';
 const allowedOrigins = (process.env.CORS_ORIGIN || '')
   .split(',')
   .map((origin) => origin.trim())
-  .filter(Boolean);
+  .filter(Boolean); //Searchs cors allowed origin at dotenv (localhost 5001)
 
 export const corsOptions: CorsOptions = {
   credentials: true,

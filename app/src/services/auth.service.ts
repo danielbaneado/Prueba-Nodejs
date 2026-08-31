@@ -37,7 +37,6 @@ class AuthService implements IAuthService {
       throw new errorhandler(400, 'Contraseña inválida, asegúrese de que cumpla con los requerimientos de contraseña');
     }
 
-    // Validar teléfono (10 dígitos exactos)
     if (!/^\d{10}$/.test(dto.phone)) {
       throw new errorhandler(400, 'El número de teléfono debe contener exactamente 10 dígitos');
     }
@@ -54,11 +53,9 @@ class AuthService implements IAuthService {
     const saltRounds = Number(process.env.SALT_ROUNDS || 10);
     const hashedPassword = await hashPassword(dto.password, saltRounds);
 
-    // Crear transacción
     const transaction = await User.sequelize?.transaction();
 
     try {
-      // 1. Crear usuario
       const user = await userRepository.create({
         name: dto.name,
         lastName: dto.lastName,
@@ -81,7 +78,6 @@ class AuthService implements IAuthService {
         throw new Error('Error al crear el usuario');
       }
 
-      // 2. Crear perfil
       await profileRepository.create({
         userId: user.id,
         lastName: dto.lastName,
@@ -91,15 +87,12 @@ class AuthService implements IAuthService {
         birthDate: new Date(dto.birthDate),
       }, transaction);
 
-      // Confirmar transacción
       await transaction?.commit();
 
-      // Enviar correo de activación (fuera de la transacción)
       try {
         await emailService.sendActivationEmail(dto.email, activationToken, dto.name);
       } catch (emailError) {
         console.error('Error sending activation email:', emailError);
-        // No fallar el registro por error de correo
       }
 
       return {
@@ -113,7 +106,6 @@ class AuthService implements IAuthService {
   }
 
   async activateAccount(token: string): Promise<{ message: string }> {
-    // Buscar usuario por token de activación
     const userToActivate = await userRepository.findByActivationToken(token);
 
     if (!userToActivate) {
@@ -128,7 +120,6 @@ class AuthService implements IAuthService {
       throw new errorhandler(400, 'La cuenta ya está activada');
     }
 
-    // Activar cuenta: limpiar token y establecer estado activo
     await userRepository.updateByID(userToActivate.id, {
       activationToken: null,
       activationTokenExpires: null,

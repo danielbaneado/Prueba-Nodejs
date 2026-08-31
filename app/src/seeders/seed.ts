@@ -4,6 +4,9 @@ import bcrypt from 'bcryptjs';
 import sequelize from '../config/database';
 import User from '../models/user.model';
 import Profile from '../models/profile.model';
+import Clinic from '../models/clinic.model';
+import Warehouse from '../models/warehouse.model';
+
 
 async function seed() {
   try {
@@ -12,7 +15,7 @@ async function seed() {
     console.log('✓ Base de datos sincronizada');
 
     // Verificar si ya existe un usuario admin
-    const existingAdmin = await User.findOne({ where: { email: 'admin@sapmicommerce.com' } });
+    const existingAdmin = await User.findOne({ where: { email: 'danielalzate076@gmail.com' } });
 
     if (!existingAdmin) {
       const saltRounds: number = 10;
@@ -21,7 +24,7 @@ async function seed() {
       const admin = await User.create({
         name: 'Admin',
         lastName: 'Sistema',
-        email: 'admin@sapmicommerce.com',
+        email: 'danielalzate076@gmail.com',
         password: hashedPassword,
         phone: '3000000000',
         documentType: 'CC',
@@ -36,6 +39,25 @@ async function seed() {
         activationTokenExpires: null,
       });
 
+      await Clinic.create({
+        name: 'Sapmi Barranquilla',
+        NIT: '900123456-1',
+        address: 'Calle 72 # 45 - 32',
+        phone: '3001234567',
+        email: 'sapmi-baq@example.com',
+        responsibleUserId: admin.id,
+        status: 'active',
+      });
+
+      await Warehouse.create({
+        name: 'Almacén Central Barranquilla',
+        address: 'Calle 72 # 45 - 32',
+        phone: '3007654321',
+        email: 'almacen-baq@example.com',
+        managerId: admin.id,
+        status: 'active',
+      });
+
       await Profile.create({
         userId: admin.id,
         lastName: 'Sistema',
@@ -45,7 +67,7 @@ async function seed() {
         birthDate: new Date('1990-01-01'),
       });
 
-      console.log('Admin creado: admin@sapmicommerce.com - contra: Admin123!');
+      console.log('Admin creado: danielalzate076@gmail.com - contra: Admin123!');
     } else {
       console.log('Admin existente, omitiendo seed');
     }

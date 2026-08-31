@@ -66,9 +66,9 @@ User.init(
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "usuario"),
+      type: DataTypes.ENUM("admin", "gestor de solicitudes"),
       allowNull: false,
-      defaultValue: 'usuario',
+      defaultValue: "gestor de solicitudes", // Burned role, admin created by seed.ts
     },
     failedLoginAttempts: {
       type: DataTypes.INTEGER,

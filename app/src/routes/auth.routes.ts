@@ -55,9 +55,6 @@ router.get('/captcha', getCaptcha);
  *               - documentType
  *               - documentNumber
  *               - birthDate
- *               - city
- *               - acceptsDataProcessing
- *               - acceptsTerms
  *               - captchaToken
  *               - captchaAnswer
  *             properties:
@@ -92,24 +89,6 @@ router.get('/captcha', getCaptcha);
  *                 type: string
  *                 format: date
  *                 example: "1990-01-01"
- *               city:
- *                 type: string
- *                 example: "Bogotá"
- *               address:
- *                 type: string
- *                 example: "Calle 123 #45-67"
- *               avatar:
- *                 type: string
- *                 example: "https://example.com/avatar.jpg"
- *               acceptsDataProcessing:
- *                 type: boolean
- *                 example: true
- *               acceptsTerms:
- *                 type: boolean
- *                 example: true
- *               acceptsNotifications:
- *                 type: boolean
- *                 example: true
  *               captchaToken:
  *                 type: string
  *               captchaAnswer:

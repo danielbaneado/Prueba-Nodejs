@@ -4,7 +4,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Sapmi API",
+      title: "Sapmi Riwi MediCare API",
       version: "1.0.0",
     },
   },

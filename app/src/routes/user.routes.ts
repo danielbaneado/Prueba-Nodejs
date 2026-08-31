@@ -50,10 +50,10 @@ router.get('/', authToken, requireRole('admin'), getUsers);
  *             properties:
  *               email:
  *                 type: string
- *                 example: john.doe@example.com
+ *                 example: danielalzate076@gmail.com
  *               password:
  *                 type: string
- *                 example: "123"
+ *                 example: Admin123!
  *     responses:
  *       201:
  *         description: Login exitoso
@@ -142,14 +142,6 @@ router.post('/logout', logout);
  *               birthDate:
  *                 type: string
  *                 format: date
- *               city:
- *                 type: string
- *               acceptsDataProcessing:
- *                 type: boolean
- *               acceptsTerms:
- *                 type: boolean
- *               acceptsNotifications:
- *                 type: boolean
  *     responses:
  *       200:
  *         description: Usuario actualizado exitosamente

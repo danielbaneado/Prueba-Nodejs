@@ -1,7 +1,12 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import errorHandler from './errorHandler';
 
-export function centralizedErrorHandler(err: Error, req: Request, res: Response): Response {
+export function centralizedErrorHandler(
+  err: Error,
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Response {
   console.error('Error no manejado:', err);
 
   if (err instanceof errorHandler) {

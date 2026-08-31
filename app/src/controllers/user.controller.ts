@@ -132,7 +132,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
       return;
     }
 
-    // Authorization: admin puede modificar cualquiera, usuario solo a sí mismo
+    // Authorization: admin can modify all users, requests gestors only themselves
     const isAdmin = req.user.role === 'admin';
     const isSelf = req.user.id === targetId;
 

@@ -26,9 +26,9 @@ module.exports = {
         allowNull: false,
       },
       role: {
-        type: Sequelize.ENUM('admin', 'usuario'),
+        type: Sequelize.ENUM('admin', 'gestor de solicitudes'),
         allowNull: false,
-        defaultValue: 'usuario',
+        defaultValue: 'gestor de solicitudes',
       },
       failedLoginAttempts: {
         type: Sequelize.INTEGER,
@@ -100,7 +100,7 @@ module.exports = {
           model: 'users',
           key: 'id',
         },
-        onUpdate: 'CASCADE',
+        onUpdate: 'CASCADE', //Updates profile table info based in user changes
         onDelete: 'CASCADE',
       },
       lastName: {
