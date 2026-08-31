@@ -19,19 +19,19 @@ class EmailService {
     const activationUrl = `${process.env.APP_URL || 'http://localhost:5001'}/api/auth/activate?token=${token}`;
 
     const mailOptions = {
-      from: `"Sapmi commerce" <${process.env.SMTP_USER || 'noreply@sapmicommerce.com'}>`,
+      from: `"Sapmi services" <${process.env.SMTP_USER || 'noreply@sapmiservices.com'}>`,
       to: email,
-      subject: 'Activa tu cuenta - Sapmi commerce',
+      subject: 'Activa tu cuenta - Sapmi services',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #333; text-align: center;">¡Bienvenido a Sapmi commerce!</h1>
+          <h1 style="color: #333; text-align: center;">¡Bienvenido a Sapmi services!</h1>
           <p style="color: #666; font-size: 16px;">Hola <strong>${userName}</strong>,</p>
           <p style="color: #666; font-size: 16px;">Gracias por registrarte en nuestra plataforma. Para completar tu registro y activar tu cuenta, por favor haz clic en el siguiente enlace:</p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${activationUrl}" style="background-color: #007bff; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-size: 16px;">Activar mi cuenta</a>
           </div>
           <p style="color: #666; font-size: 14px;">Este enlace expirará en 24 horas. Si no has solicitado esta cuenta, puedes ignorar este correo.</p>
-          <p style="color: #666; font-size: 14px;">Saludos,<br>El equipo de Sapmi commerce</p>
+          <p style="color: #666; font-size: 14px;">Saludos,<br>El equipo de Sapmi services</p>
         </div>
       `,
     };

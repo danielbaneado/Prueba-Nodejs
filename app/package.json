@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "Sapmi Services",
   "version": "1.0.0",
   "description": "API con Node, Express, TypeScript, Swagger, Jest y Sequelize para PostgreSQL",
   "main": "dist/index.js",
