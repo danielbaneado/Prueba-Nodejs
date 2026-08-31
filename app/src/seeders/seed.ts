@@ -4,9 +4,6 @@ import bcrypt from 'bcryptjs';
 import sequelize from '../config/database';
 import User from '../models/user.model';
 import Profile from '../models/profile.model';
-import Clinic from '../models/clinic.model';
-import Warehouse from '../models/warehouse.model';
-
 
 async function seed() {
   try {
@@ -37,25 +34,6 @@ async function seed() {
         lockedUntil: null,
         activationToken: null,
         activationTokenExpires: null,
-      });
-
-      await Clinic.create({
-        name: 'Sapmi Barranquilla',
-        NIT: '900123456-1',
-        address: 'Calle 72 # 45 - 32',
-        phone: '3001234567',
-        email: 'sapmi-baq@example.com',
-        responsibleUserId: admin.id,
-        status: 'active',
-      });
-
-      await Warehouse.create({
-        name: 'Almacén Central Barranquilla',
-        address: 'Calle 72 # 45 - 32',
-        phone: '3007654321',
-        email: 'almacen-baq@example.com',
-        managerId: admin.id,
-        status: 'active',
       });
 
       await Profile.create({
