@@ -11,10 +11,6 @@ import { centralizedErrorHandler } from './error/centralizedErrorHandler';
 import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
 import clinicRoutes from './routes/clinic.routes';
-import warehouseRoutes from './routes/warehouse.routes';
-import medicationRoutes from './routes/medication.routes';
-import inventoryRoutes from './routes/inventory.routes';
-import supplyRequestRoutes from './routes/supply-request.routes';
 import v1Routes from './routes/v1.routes';
 
 const app = express();
@@ -34,11 +30,6 @@ app.use('/api/v1', v1Routes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/clinics', clinicRoutes);
-app.use('/api/warehouses', warehouseRoutes);
-app.use('/api/medications', medicationRoutes);
-app.use('/api/inventories', inventoryRoutes);
-app.use('/api/supply-requests', supplyRequestRoutes);
-
 // Swagger
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
