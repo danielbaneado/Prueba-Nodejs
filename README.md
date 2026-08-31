@@ -24,19 +24,19 @@
 - [Technologies Used](#technologies-used)
 - [Architecture](#architecture)
 - [Key Features](#key-features)
-- [Documentation](#documentation)
+- [Environment Variables](#environment-variables)
 - [Installation](#installation)
-- [Deploy all the project in Docker](#deploy-all-the-project-in-docker)
-  - [Linux/macOS](#linuxmacos)
-  - [Windows (Command Prompt)](#windows-command-prompt)
-  - [Windows (PowerShell)](#windows-powershell)
-- [👥 Author](#-author)
+- [Running the Project](#running-the-project)
+- [Seeders](#seeders)
+- [API Documentation](#api-documentation)
+- [Repository](#repository)
+- [Author](#author)
 
 ---
 
 ## Project Description
 
-<!-- Business logic description to be added -->
+Sapmi Riwi MediCare Plus es un sistema de gestión de inventario de medicamentos para clínicas. Permite registrar clínicas y sus responsables, administrar el inventario de medicamentos en almacenes, crear solicitudes de abastecimiento, asignar solicitudes a almacenes, controlar el estado de cada solicitud y consultar el historial de solicitudes por clínica.
 
 Built with **Node.js**, **TypeScript**, and **PostgreSQL** under a modular and scalable architecture.
 
@@ -57,6 +57,7 @@ Built with **Node.js**, **TypeScript**, and **PostgreSQL** under a modular and s
 | **Framework**      | Express v5.2.1          |
 | **Database**       | PostgreSQL + Sequelize v6.37.3 |
 | **Authentication** | JWT + bcryptjs v3.0.3   |
+| **File Upload**    | Multer v2.3.0           |
 | **Documentation**  | Swagger / OpenAPI       |
 | **Testing**        | Jest v29.7.0            |
 | **Containers**     | Docker / Docker Compose |
@@ -99,10 +100,11 @@ app/src/
 ##  Key Features
 
 - **Modular Architecture**: REPOSITORIES/DTO patterns with service layer
-- **Security**: JWT authentication
+- **Security**: JWT authentication with bcrypt password hashing
 - **Validation**: Automatic request validation with class-validator
-- **Documentation**: Auto-generated Swagger docs
+- **Documentation**: Auto-generated Swagger docs at `/api/docs`
 - **Database**: Automated migrations and seeders
+- **File Upload**: JSON file upload for bulk data seeding
 - **Testing**: Jest configuration for unit tests
 
 <div align=right>
@@ -113,11 +115,49 @@ app/src/
 
 ---
 
-##  Documentation
+## Environment Variables
 
-Detailed documentation available in `/docs`:
+Create a `.env` file in the project root with the following variables:
 
+```env
+# Database Configuration
+DB_CONTAINER_NAME=sapmi-db
+POSTGRES_USER=nodejs
+POSTGRES_PASSWORD=123456
+POSTGRES_DB=postgres
+POSTGRES_PORT=5432
+POSTGRES_HOST=db
+POSTGRES_HOST_PORT=5433
 
+# Application Configuration
+APP_CONTAINER_NAME=sapmi-backend
+APP_PORT=5001
+APP_URL=http://localhost:5001
+CORS_ORIGIN=http://localhost:5001
+
+# JWT Configuration
+JWT_SECRET=o5mOGp11Q98B1BQxol2e6TgOyjHAqAglpRAzWix6mlVi6kgoFuPj_mHc_SbT2Gtr
+JWT_REFRESH_SECRET=Ytmtnqk0on3n9HKhm4JNwhBCMWEKYeovToyRRFrULGMA7eFwdM53t0o8uGWgIpza
+
+# Security
+SALT_ROUNDS=10
+MAX_FAILED_ATTEMPTS=5
+
+# Environment
+NODE_ENV=development
+
+# Email (optional)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+
+# Resource Limits
+DB_CPU_LIMIT=2
+DB_MEM_LIMIT=512MB
+APP_CPU_LIMIT=2
+APP_MEM_LIMIT=512MB
+```
 
 <div align=right>
 
@@ -129,22 +169,27 @@ Detailed documentation available in `/docs`:
 
 ##  Installation
 
+### Prerequisites
+- [Node.js](https://nodejs.org/) v20.x
+- [Docker](https://www.docker.com/) and Docker Compose
+- [Git](https://git-scm.com/)
+
+### Steps
+
 ```bash
 # Clone repository
-git clone <repository-url>
-cd workdir
+git clone https://github.com/danielbaneado/Prueba-Nodejs.git
+cd Prueba-Nodejs
 
 # Install dependencies
 cd app && npm install
 
 # Configure environment
 cp .env.example .env
+# Edit .env with your configuration
 
-# Start with Docker
-docker-compose up -d
-
-# Or start in development mode
-npm run dev
+# Return to project root
+cd ..
 ```
 
 <div align=right>
@@ -155,51 +200,39 @@ npm run dev
 
 ---
 
-##  Deploy all the project in Docker
+## Running the Project
 
-### Linux/macOS
+### Using Docker (Recommended)
+
 ```bash
-# Start all services
-docker-compose up -d
+# Build and start all services
+docker-compose up --build -d
 
 # View logs
 docker-compose logs -f
 
 # Stop services
 docker-compose down
-
 ```
 
-### Windows (Command Prompt)
-```cmd
-REM Start all services
-docker-compose up -d
+### Development Mode (without Docker)
 
-REM alternative
-docker-compose up --build
+```bash
+# Make sure PostgreSQL is running locally
+# Update .env with local database credentials
 
-REM View logs
-docker-compose logs -f
-
-REM Stop services
-docker-compose down
-
+# Start in development mode
+cd app && npm run dev
 ```
 
-### Windows (PowerShell)
-```powershell
-# Start all services
-docker-compose up -d
+### Verify Installation
 
-# alternative
-docker-compose up --build
+```bash
+# Test endpoint
+curl http://localhost:5001/api/test
 
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-
+# Expected response:
+# {"message":"Servidor funcionando correctamente!"}
 ```
 
 <div align=right>
@@ -210,7 +243,150 @@ docker-compose down
 
 ---
 
-## 👥 Author
+## Seeders
+
+The project includes seeders to load test data into the database.
+
+### Run Default Seed
+
+Creates default data including admin user, gestor, clinic, warehouse, medications, and sample supply requests.
+
+#### Via API Endpoint
+```bash
+curl -X POST http://localhost:5001/api/seed/run-default
+```
+
+#### Via NPM Script
+```bash
+cd app && npm run seed
+```
+
+#### Default Credentials
+| Role  | Email                      | Password   |
+| ----- | -------------------------- | ---------- |
+| Admin | danielalzate076@gmail.com  | Admin123!  |
+| Gestor| gestor@sapmi.com           | Gestor123! |
+
+### Upload Custom Seed File (JSON)
+
+Upload a JSON file with custom data for clinics, warehouses, medications, inventories, and supply requests.
+
+```bash
+curl -X POST -F "file=@seed-data.json" http://localhost:5001/api/seed/upload
+```
+
+#### JSON File Format Example
+```json
+{
+  "clinics": [
+    {
+      "name": "Clínica Ejemplo",
+      "NIT": "900999999-1",
+      "address": "Calle 100 # 10 - 20",
+      "phone": "3009999999",
+      "email": "clinic@example.com",
+      "responsibleUserId": 1,
+      "status": "active"
+    }
+  ],
+  "warehouses": [
+    {
+      "name": "Almacén Norte",
+      "address": "Carrera 15 # 80 - 30",
+      "phone": "3008888888",
+      "email": "warehouse@example.com",
+      "managerId": 1,
+      "status": "active"
+    }
+  ],
+  "medications": [
+    {
+      "name: "Aspirina",
+      "description": "Analgésico y antiinflamatorio",
+      "unit": "tabletas",
+      "category": "Analgésicos",
+      "status": "active"
+    }
+  ],
+  "inventories": [
+    {
+      "warehouseId": 1,
+      "medicationId": 1,
+      "stock": 1000,
+      "minStock": 100,
+      "status": "active"
+    }
+  ],
+  "supplyRequests": [
+    {
+      "clinicId": 1,
+      "medicationId": 1,
+      "warehouseId": 1,
+      "quantity": 50,
+      "status": "pending",
+      "notes": "Solicitud de prueba"
+    }
+  ]
+}
+```
+
+<div align=right>
+
+[Back to top](#-table-of-contents)
+
+</div>
+
+---
+
+## API Documentation
+
+Interactive API documentation is available via Swagger UI:
+
+```
+http://localhost:5001/api/docs
+```
+
+### Main Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | User login |
+| GET | `/api/clinics` | Get all clinics |
+| POST | `/api/clinics` | Create clinic |
+| GET | `/api/warehouses` | Get all warehouses |
+| POST | `/api/warehouses` | Create warehouse |
+| GET | `/api/medications` | Get all medications |
+| POST | `/api/medications` | Create medication |
+| GET | `/api/inventories` | Get all inventories |
+| POST | `/api/inventories` | Create inventory |
+| GET | `/api/supply-requests` | Get all supply requests |
+| POST | `/api/supply-requests` | Create supply request |
+| PATCH | `/api/supply-requests/:id/status` | Update request status |
+| POST | `/api/seed/run-default` | Run default seeder |
+| POST | `/api/seed/upload` | Upload seed file |
+
+<div align=right>
+
+[Back to top](#-table-of-contents)
+
+</div>
+
+---
+
+## Repository
+
+GitHub: [https://github.com/danielbaneado/Prueba-Nodejs](https://github.com/danielbaneado/Prueba-Nodejs)
+
+<div align=right>
+
+[Back to top](#-table-of-contents)
+
+</div>
+
+---
+
+## Author
 
 | Name              | Role               | Path |
 | ----------------- | ------------------ | ---- |
